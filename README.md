@@ -108,7 +108,8 @@ Each review belongs to one property and is written by one user (guest).
 - **payment_method**: card, cash or mpesa
 - **status**: Current status of payment (pending, completed, refunded)
 - **payment_date**: Date and time of payment
-- **refunded_at**: Date of refund
+- **refund_requested_at**: Date of refund request
+- **refund_granted_at**: Date of refund grant
 - **refund_reason**: Reason of refund
 
 Each payment is associated with one booking.

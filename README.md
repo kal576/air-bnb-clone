@@ -57,19 +57,24 @@ An asynchronous task queue based on distributed message passing. Celery handles 
 
 ### Users
 - **user_id**: Unique identifier for each user
+- **first_name**: User's first name
+- **last_name**: User's last name
 - **email**: User's email address (unique)
 - **password**: Encrypted password
-- **name**: User's full name
-- **profile_picture**: URL to the user's profile picture
-
+- **role**: can be admin, host or guest
+- **created_at**: user's profile creation date
+- **deleted_at**: user's deletion date
 Users can have multiple properties (as hosts) and multiple bookings (as guests).
 
 ### Properties
 - **property_id**: Unique identifier for each property
 - **host_id**: Reference to the user who owns the property
 - **title**: Property title
-- **description**: Detailed description of the property
-- **price_per_night**: Cost per night in USD
+- **property_image**: image files to the property
+- **property_type**: can be apartment, bedsitter, cottage
+- **location**: property location
+- **is_available**: boolean to check if property is available for booking or not
+- **price_per_night**: Cost per night in Ksh
 
 Each property belongs to one user (host) and can have multiple bookings and reviews.
 
@@ -77,17 +82,22 @@ Each property belongs to one user (host) and can have multiple bookings and revi
 - **booking_id**: Unique identifier for each booking
 - **property_id**: Reference to the booked property
 - **guest_id**: Reference to the user making the booking
+- **num_of_guests**: Number of guests per night
+- **total_price**: total price of bookings
 - **check_in_date**: Date of check-in
 - **check_out_date**: Date of check-out
+- **cancelled_at**: Date of cancellation
+- **status**: Pending or completed or cancelled
 
 Each booking belongs to one property and one user (guest).
 
 ### Reviews
 - **review_id**: Unique identifier for each review
-- **property_id**: Reference to the reviewed property
+- **booking_id**: Reference to the reviewed property. I'm usig booking_id to ensure only users who have stayed there can review
 - **guest_id**: Reference to the user writing the review
 - **rating**: Numerical rating (1-5)
-- **comment**: Text content of the review
+- **review**: Text content of the review
+- **date**: Date of review submission
 
 Each review belongs to one property and is written by one user (guest).
 
@@ -95,8 +105,11 @@ Each review belongs to one property and is written by one user (guest).
 - **payment_id**: Unique identifier for each payment
 - **booking_id**: Reference to the associated booking
 - **amount**: Payment amount in USD
-- **status**: Current status of payment (pending, completed, failed)
+- **payment_method**: card, cash or mpesa
+- **status**: Current status of payment (pending, completed, refunded)
 - **payment_date**: Date and time of payment
+- **refunded_at**: Date of refund
+- **refund_reason**: Reason of refund
 
 Each payment is associated with one booking.
 
@@ -144,7 +157,7 @@ Proper security headers and Cross-Origin Resource Sharing (CORS) policies are im
 
 Continuous Integration/Continuous Deployment (CI/CD) pipelines automate the testing and deployment processes, ensuring code quality and enabling rapid, reliable software delivery. These automated workflows help detect bugs early, facilitate consistent deployments, and allow developers to focus on writing code rather than manual deployment tasks.
 
-Our CI/CD pipeline utilizes GitHub Actions for automation, Docker for containerization, and deployment scripts for consistent environment setup. The pipeline includes:
+The CI/CD pipeline I chose uses GitHub Actions for automation, Docker for containerization, and deployment scripts for consistent environment setup. The pipeline includes:
 
 1. **Code Linting and Style Checking**: Ensures code quality and consistency
 2. **Automated Testing**: Runs unit and integration tests to catch bugs early
